@@ -58,8 +58,10 @@ int main(int argc, char **argv)
 				nAcessosI++;
                 resultAcesso = buscaInsereCache(&cacheI1, endereco);
 				if ( resultAcesso != 0)
+				{
 					nFalhasI1 ++;
 					nFalhasTotal ++; // Atualiza o numero de falhas global
+				}
             // Procura bloco na cache I1 e, se não encontra, insere bloco na cache I1
 			// Valor de retorno = 0 (acerto), 1 (falha sem substituição) ou 2 (falha com substituição)
 			// Atualiza variavel contatora de falhas na cache I1
@@ -69,8 +71,10 @@ int main(int argc, char **argv)
 				nAcessosD++;
                 resultAcesso = buscaInsereCache(&cacheD1, endereco);
 				if ( resultAcesso != 0)
+				{
 					nFalhasD1 ++;
 					nFalhasTotal ++; // Atualiza o numero de falhas global
+				}
 			// Procura bloco na cache D1 e, se não encontra, insere bloco na cache D1
 			// Valor de retorno = 0 (acerto), 1 (falha sem substituição) ou 2 (falha com substituição)
 			// Atualiza variavel contatora de falhas na cache D1
@@ -82,8 +86,10 @@ int main(int argc, char **argv)
 				nAcessosL2++;
 				resultAcesso = buscaInsereCache(&cacheL2, endereco); // Chama a busca na L2 e atualiza a o resultado de acesso
 				if ( resultAcesso != 0) // Se houve falha na busca
+				{
 					nFalhasL2 ++; //Atualiza contador especifico
 					nFalhasTotal ++; // Atualiza o numero de falhas global
+				}
 			}
 		}
 	}
@@ -100,9 +106,15 @@ void inicializa(int argc, char **argv)
 	char nomeArqConfig[100],
 		  nomeArqAcessos[100];
 
-	unsigned int nBlocosL1,				// Número total de blocos da cache L1
-					 associatividadeL1,	// Número de blocos por conjunto da cache L1
-					 nPalavrasBlocoL1;	// Número de palavras do bloco da cache L1
+	unsigned int nBlocosI1,				// Número total de blocos da cache I1
+					 associatividadeI1,	// Número de blocos por conjunto da cache I1
+					 nPalavrasBlocoI1,	// Número de palavras do bloco da cache I1
+					 nBlocosD1,			// Número total de blocos da cache D1
+					 associatividadeD1,	// Número de blocos por conjunto da cache D1
+					 nPalavrasBlocoD1,	// Número de palavras do bloco da cache D1
+					 nBlocosL2,			// Número total de blocos da cache D1
+					 associatividadeL2,	// Número de blocos por conjunto da cache D1
+					 nPalavrasBlocoL2;	// Número de palavras do bloco da cache D1
 
 	FILE *arqConfig;	// Arquivo com configuração da cache
 
@@ -120,7 +132,9 @@ void inicializa(int argc, char **argv)
 		printf("\nArquivo de configuração não encontrado\n");
 		exit(0);
 	}
-	fscanf(arqConfig, "%d %d %d", &nBlocosL1, &associatividadeL1, &nPalavrasBlocoL1);
+	fscanf(arqConfig, "%d %d %d", &nBlocosI1, &associatividadeI1, &nPalavrasBlocoI1);
+	fscanf(arqConfig, "%d %d %d", &nBlocosD1, &associatividadeD1, &nPalavrasBlocoD1);
+	fscanf(arqConfig, "%d %d %d", &nBlocosL2, &associatividadeL2, &nPalavrasBlocoL2);
 	fclose(arqConfig);
 
 	// Abre arquivo de acessos
@@ -138,9 +152,9 @@ void inicializa(int argc, char **argv)
 	nFalhasTotal = 0;
 
 	// Aloca e inicializa estrutura de dados da cache L1
-	alocaCache(&cacheI1, nBlocosL1, associatividadeL1, nPalavrasBlocoL1);
-	alocaCache(&cacheD1, nBlocosL1, associatividadeL1, nPalavrasBlocoL1);
-	alocaCache(&cacheL2, nBlocosL1, associatividadeL1, nPalavrasBlocoL1);
+	alocaCache(&cacheI1, nBlocosI1, associatividadeI1, nPalavrasBlocoI1);
+	alocaCache(&cacheD1, nBlocosD1, associatividadeD1, nPalavrasBlocoD1);
+	alocaCache(&cacheL2, nBlocosL2, associatividadeL2, nPalavrasBlocoL2);
 }
 
 //-----------------------------------------------------------------------------
